@@ -1,72 +1,148 @@
 ![Entity Fields Analyzer icon](https://raw.githubusercontent.com/AmraouiH/EntityFieldsAnalyzer-PPTB/main/public/icon/entity-fields-analyzer.svg)
 
-# Entity Fields Analyzer (Power Platform ToolBox)
+# Entity Fields Analyzer
 
-Entity Fields Analyzer for [Power Platform ToolBox](https://www.powerplatformtoolbox.com/) is the web version of the Entity Fields Analyser XrmToolBox plugin. It answers four questions about a Dataverse / Dynamics 365 table:
+**A Power Platform ToolBox tool that shows what is really inside a Dataverse table.**
 
-- What are its fields, and where do they come from?
-- Which fields are really filled, and which are never used?
-- How much room is left before the limit of 1,024 columns?
-- What should be cleaned up first?
+*Reads the fields. Measures what is filled. Estimates the room left. Recommends what to clean up. Never writes to Dataverse.*
 
-| Page | What it does |
-|---|---|
-| **Overview** | Key figures, field types, origin (standard / custom, managed / unmanaged), field settings, custom fields per publisher prefix, fields created over time. Click a chart or a tile to list its fields. |
-| **Fields** | Every field with its metadata (32 more columns with *All metadata columns*), quick filters, type filter, search, sort. |
-| **Data usage** | Fill rate of each field, never used and rarely used fields, distribution, fill rate by type, least used custom fields. |
-| **Capacity** | Estimate of the physical columns used, what consumes them, and a calculator for the fields you plan to add. |
-| **Export to Excel** | One workbook: metadata, dashboard with native charts, summary, recommendations, data usage, by type, by publisher, lookups, timeline. |
+[![Power Platform ToolBox](https://img.shields.io/badge/Power%20Platform-ToolBox-742774)](https://www.powerplatformtoolbox.com/)
+[![Originally on XrmToolBox](https://img.shields.io/badge/originally%20on-XrmToolBox-1e6fba)](https://www.xrmtoolbox.com/plugins/EntityFieldsAnalyser/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AmraouiH/EntityFieldsAnalyzer-PPTB/blob/main/LICENSE)
+[![Dataverse](https://img.shields.io/badge/Dynamics%20365-Dataverse-0078d4)](https://learn.microsoft.com/power-apps/developer/data-platform/)
+[![Read-only](https://img.shields.io/badge/Dataverse%20access-read--only-2ead33)](#what-this-tool-changes)
 
-Nothing is read until you click **Get Entities**. The interface and the report are available in English and French.
-
-## Screenshots
-
-Demo data from the end-to-end tests.
-
-**Overview**: every chart opens the matching fields.
+> **From XrmToolBox to Power Platform ToolBox.** This tool comes from [**Entity Fields Analyser**](https://www.xrmtoolbox.com/plugins/EntityFieldsAnalyser/), the XrmToolBox plugin by Hamza AMRAOUI with more than 50,000 downloads. It is ported by the same author.
 
 ![Overview of the fields of a table](https://raw.githubusercontent.com/AmraouiH/EntityFieldsAnalyzer-PPTB/main/docs/screenshots/overview.png)
 
-**Fields**: the fields empty in every record are highlighted.
+---
+
+## What it does
+
+You pick a table. It gives you a clear picture of its fields, and an Excel report of what it found.
+
+| | |
+|---|---|
+| 🔍 **Explains the table** | Field types, standard or custom, managed or unmanaged, publisher prefixes, settings, fields created over time. |
+| 📋 **Lists every field** | Metadata, quick filters, type filter, search and sort. 32 more columns with *All metadata columns*. |
+| 🧪 **Measures real usage** | Fill rate of each field across the records you can read: never used, rarely used (under 5%), least used custom fields. |
+| 📐 **Plans capacity** | Estimate of the physical columns used out of 1,024, and a calculator for the fields you want to add. |
+| 💡 **Recommends** | Findings sorted by severity in the Excel report: clean-up, data quality, documentation, ALM, security. |
+| 📊 **Reports in Excel** | One workbook with a dashboard, native charts and up to 9 sheets. |
+| 🌍 **Feels at home** | English and French, light and dark theme. |
+
+---
+
+## How it differs from other ToolBox tools
+
+Some listed tools also read field metadata or values. Entity Fields Analyzer is about the **health of one table**: how full every field is, how many of the 1,024 columns are used, and what to clean up.
+
+| Tool | What it is for | What Entity Fields Analyzer adds |
+|---|---|---|
+| **Entity Field Catalog** | Exports the field metadata of several tables of a solution to Excel or CSV | Fill rates, capacity estimate and calculator, interactive charts, clean-up recommendations |
+| **Metadata Browser** | Browses metadata and compares it across environments | Fill rates from the records, capacity planning, a report that analyses the table |
+| **Data Validation** | Runs the tests you configure on columns, including whether they contain data | Fill rate of every field with no setup, combined with origin, capacity and recommendations |
+| **Field Reference Finder** | Finds the components that reference a field | It is the step before: which fields are worth checking. Use Field Reference Finder before deleting one |
+
+For documentation of many tables, comparison between environments or dependency search, use those tools.
+
+---
+
+## How an analysis runs
+
+```
+ Get Entities ──► Pick a table ──► Choose a mode ──► Analyse
+                                                        │
+ Excel report ◄── Export ◄── Drill down ◄── Charts and figures
+```
+
+| Step | What happens | Your role |
+|---|---|---|
+| **1. Load** | Lists the tables of the connected environment | **Click Get Entities** |
+| **2. Choose** | Filters and searches by display or schema name | **Pick a table and a mode** |
+| **3. Analyse** | Reads the metadata, and the records if you asked for data usage | **Click Analyse** |
+| **4. Explore** | Every chart and tile opens the matching fields, already filtered | Click what interests you |
+| **5. Report** | Builds the Excel workbook on your computer | **Click Export to Excel** |
+
+> **Nothing is read until you click, and nothing is ever written to Dataverse.** Stop or Esc interrupts an analysis.
+
+---
+
+## Quick start
+
+**1. Open the tool**
+
+In [Power Platform ToolBox](https://www.powerplatformtoolbox.com/), open **Entity Fields Analyzer** and pick a Dataverse connection. To run it from the source code, see [Run from source](#run-from-source).
+
+**2. Load your tables**
+
+Click **Get Entities**, then select a table.
+
+**3. Pick a mode and analyse**
+
+| Mode | What it reads | When to use it |
+|---|---|---|
+| **Metadata only** | The definition of the fields | A fast look at the structure and the capacity |
+| **Metadata + Data usage** | The definition, plus every record you can read | Before a clean-up. Slower on large tables |
+
+**4. Export**
+
+Click **Export to Excel** to save and share the report.
+
+---
+
+## A closer look
+
+### Fields
+
+Every field with its metadata. The fields that are empty in every record are highlighted.
 
 ![Fields with their metadata and fill rate](https://raw.githubusercontent.com/AmraouiH/EntityFieldsAnalyzer-PPTB/main/docs/screenshots/fields.png)
 
-**Data usage**: the clean-up candidates.
+### Data usage
+
+How full each field is, and where to start the clean-up.
 
 ![Data usage of the fields](https://raw.githubusercontent.com/AmraouiH/EntityFieldsAnalyzer-PPTB/main/docs/screenshots/data-usage.png)
 
-**Capacity**: plan new fields before creating them.
+### Capacity
+
+What consumes the columns, and whether the fields you plan to add will fit.
 
 ![Column capacity and calculator](https://raw.githubusercontent.com/AmraouiH/EntityFieldsAnalyzer-PPTB/main/docs/screenshots/capacity.png)
 
-**Dark theme**: the tool follows the theme of the ToolBox.
+### Dark theme
+
+The tool follows the theme of the ToolBox.
 
 ![Overview in the dark theme](https://raw.githubusercontent.com/AmraouiH/EntityFieldsAnalyzer-PPTB/main/docs/screenshots/overview-dark.png)
 
-## How to use
+*Screenshots use demo data.*
 
-1. Open the tool with a Dataverse connection and click **Get Entities**.
-2. Filter or search the list, then click an entity (a double-click analyses it right away).
-3. Choose **Metadata only**, or **Metadata + Data usage** to also measure how full each field is.
-4. Click **Analyse**. **Stop** or **Esc** interrupts an analysis; no partial result is kept.
-5. Click **Export to Excel** to save the report.
+---
 
-## What this tool changes
+## What is in the Excel report
 
-**Nothing in Dataverse.** The tool only sends read requests: it never creates, updates, deletes or publishes anything.
+| Sheet | Content |
+|---|---|
+| **Metadata** | Every analysed field with its properties, in a sheet named after the table |
+| **Dashboard** | Key figures and native Excel charts |
+| **Summary** | The figures of the analysis and the number of findings |
+| **Recommendations** | Each finding with its severity and what to do |
+| **Data usage** | Fill rate per field, only in *Metadata + Data usage* mode |
+| **By Type** | Breakdown per field type |
+| **By Publisher** | Breakdown per publisher prefix |
+| **Lookups** | Lookup fields and the tables they target |
+| **Timeline** | Fields created over time |
 
-On your computer, it writes the Excel report when you export it, and three preferences in the ToolBox settings (language, entity filter, metadata columns).
-
-## Data and network
-
-- The tool calls only the connected Dataverse environment, through the ToolBox. It declares no external host and sends no telemetry.
-- Data usage reads the records of the table in memory, page by page, and keeps only a counter per field. No record value is stored or exported.
+---
 
 ## How the figures are computed
 
-- **Analysed fields**: readable attributes, without virtual, party list, composite and companion attributes (`AttributeOf`). Multi-select choices, files and images are virtual attributes, so they are not analysed.
-- **Fill rate**: share of the records read where the field has a value. `0`, `No` and an empty text are values.
-- **Column capacity** is an estimate with the weights below, against 1,024 columns.
+- **Analysed fields**: readable attributes, without virtual, party list, composite and companion attributes (`AttributeOf`).
+- **Fill rate**: share of the records read where the field has a value. `0`, `No` and an empty text count as values.
+- **Column capacity**: an estimate with the weights below, against 1,024 columns.
 
 | Field type | Columns |
 |---|---|
@@ -76,59 +152,90 @@ On your computer, it writes the Excel report when you export it, and three prefe
 
 Background: [Field limits in Dynamics 365: how many fields is too many fields?](https://hamzaamraoui.medium.com/field-limits-in-dynamics-365-how-many-fields-is-too-many-fields-ab39c699336e)
 
-## Known limitations
+---
 
-- **Permissions**: only what your account can read is counted. Records you cannot see are left out, and secured fields you cannot read look empty. Check with a privileged account before deleting a field.
-- **Large tables**: data usage reads every record, so it can take a long time and it counts toward the service protection limits of Dataverse. The ToolBox rejects responses over 16 MB, so pages are sized to the records and the scan restarts with smaller pages when one is still too large.
-- **Unpublished changes** are included when Dataverse accepts `RetrieveEntity`. Otherwise the tool reads the published metadata and says so.
+## What this tool changes
 
-## Build
+**Nothing in Dataverse.** The tool never creates, updates, deletes or publishes anything.
 
-Requirements: Node.js 20.19 or later.
+On your computer, it writes the Excel report when you export it, and three preferences in the ToolBox settings: language, entity filter and metadata columns.
+
+---
+
+## Safety
+
+- Only read requests, sent to the connected environment through the ToolBox.
+- No external host, no telemetry.
+- Records are read in memory, page by page. Only a counter per field is kept: no record value is stored or exported.
+- A stopped analysis keeps no partial result.
+- A secured field that reads as empty is never proposed for deletion.
+
+Always check forms, views, processes, plugins and integrations before deleting a field. You remain responsible for what you delete.
+
+---
+
+## Limitations
+
+- **Not analysed**: multi-select choices, files and images, which are virtual attributes.
+- **Permissions**: records you cannot read are not counted, and secured fields you cannot read look empty. Check with a privileged account before a clean-up.
+- **Large tables**: data usage reads every record, so it takes time and counts toward the Dataverse service protection limits. Pages shrink automatically to stay under the 16 MB response limit of the ToolBox.
+- **Unpublished changes**: included when Dataverse accepts `RetrieveEntity`. Otherwise the tool reads the published metadata and tells you.
+
+---
+
+## Run from source
+
+| Requirement | Why |
+|---|---|
+| Power Platform ToolBox | runs the tool |
+| Node.js 20.19+ | build and tests |
+| Edge or Chrome | end-to-end tests |
 
 ```bash
+git clone https://github.com/AmraouiH/EntityFieldsAnalyzer-PPTB.git
+cd EntityFieldsAnalyzer-PPTB
 npm install
-npm run build        # type-check + vite build -> dist/
-npm run dev-watch    # development build with source maps, rebuilt on save
-npm run validate     # pptb-validate
+npm run build
 ```
 
-## Automated tests
+Then, in Power Platform ToolBox:
 
-```bash
-npm run test:logic   # metadata, paging, capacity, recommendations, Excel
-npm run test:e2e     # headless Edge / Chrome against an in-memory Dataverse and ToolBox
-```
+1. Open **Settings**, turn on **Show Debug Menu** and select **Save**.
+2. In **Debug**, under **Load Local Tool**, select **Browse** and pick the folder that contains `package.json`.
+3. Select **Load Tool**.
 
-The end-to-end tests open the production bundle with a content security policy like the one of the ToolBox. They fail on any write, extra header or console error. Set `EFA_SHOTS` and `EFA_XLSX` to folders to keep the screenshots and workbooks, and `PW_BROWSER` if your browser is not in a standard location.
+| Command | Purpose |
+|---|---|
+| `npm run build` | Type-check and build into `dist/` |
+| `npm run dev-watch` | Development build, rebuilt on save |
+| `npm run validate` | Marketplace validation of the package |
+| `npm run test:logic` | Tests of the calculations, paging and Excel report |
+| `npm run test:e2e` | Browser tests against a simulated Dataverse and ToolBox |
 
-## Load in Power Platform ToolBox
-
-1. Run `npm run build`.
-2. In Power Platform ToolBox, open **Settings**, turn on **Show Debug Menu**, and select **Save**.
-3. In the **Debug** section, under **Load Local Tool**, select **Browse**, pick this folder (the one that contains `package.json`), then select **Load Tool**.
-4. Open **Entity Fields Analyzer** and pick a connection.
-
-## Publish
-
-1. Update `version` in `package.json`.
-2. Run `npm run build`, `npm run validate`, then `npm run finalize-package`.
-3. Run `npm publish --access public`.
-4. Submit the package at https://www.powerplatformtoolbox.com/submit-tool.
+---
 
 ## AI Assistance
 
-A substantial part of the code, the tests and this documentation was written with an AI coding assistant (Claude Code, by Anthropic).
-See the [AI-Assisted Development policy](https://docs.powerplatformtoolbox.com/policies/ai-assisted-development).
+A substantial part of the code, the tests and this documentation was written with an AI coding assistant (Claude Code, by Anthropic). See the [AI-Assisted Development policy](https://docs.powerplatformtoolbox.com/policies/ai-assisted-development).
+
+---
 
 ## Credits
 
-Port of the [Entity Fields Analyser XrmToolBox plugin](https://github.com/AmraouiH/Entity-Field-Analyser) by Hamza AMRAOUI, republished here by its author under the MIT license.
+Entity Fields Analyzer is a port of [**Entity Fields Analyser** for XrmToolBox](https://www.xrmtoolbox.com/plugins/EntityFieldsAnalyser/) by [Hamza AMRAOUI](https://www.linkedin.com/in/hamza-amraoui/) ([source code](https://github.com/AmraouiH/Entity-Field-Analyser)).
+
+The original repository has no license file. Its author publishes this port under the MIT license.
+
+---
 
 ## Support
 
-If the tool helps you, you can support its development on [PayPal](https://www.paypal.com/paypalme/EntityFieldsAnalyser). Bugs and ideas: [GitHub issues](https://github.com/AmraouiH/EntityFieldsAnalyzer-PPTB/issues).
+If the tool helps you, you can support its development on [PayPal](https://www.paypal.com/paypalme/EntityFieldsAnalyser). Bugs and ideas are welcome in [GitHub issues](https://github.com/AmraouiH/EntityFieldsAnalyzer-PPTB/issues).
+
+---
 
 ## License
 
-MIT
+[MIT](https://github.com/AmraouiH/EntityFieldsAnalyzer-PPTB/blob/main/LICENSE) © 2026 Hamza AMRAOUI
+
+**[XrmToolBox version](https://www.xrmtoolbox.com/plugins/EntityFieldsAnalyser/)** · **[Source](https://github.com/AmraouiH/EntityFieldsAnalyzer-PPTB)** · **[Issues](https://github.com/AmraouiH/EntityFieldsAnalyzer-PPTB/issues)** · **[LinkedIn](https://www.linkedin.com/in/hamza-amraoui/)**
