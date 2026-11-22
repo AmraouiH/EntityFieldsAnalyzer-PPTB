@@ -1,6 +1,6 @@
 {
     "name": "pptb-entity-fields-analyzer",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "displayName": "Entity Fields Analyzer",
     "description": "Understand the fields of any Dataverse table: types, origin, data usage and column capacity left. Drill down from every chart and export a full Excel report with dashboard and recommendations.",
     "main": "index.html",

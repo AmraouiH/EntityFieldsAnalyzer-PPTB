@@ -6,6 +6,7 @@
 
 *Reads the fields. Measures what is filled. Estimates the room left. Recommends what to clean up. Never writes to Dataverse.*
 
+[![npm](https://img.shields.io/npm/v/pptb-entity-fields-analyzer?color=cb3837&logo=npm)](https://www.npmjs.com/package/pptb-entity-fields-analyzer)
 [![Power Platform ToolBox](https://img.shields.io/badge/Power%20Platform-ToolBox-742774)](https://www.powerplatformtoolbox.com/)
 [![Originally on XrmToolBox](https://img.shields.io/badge/originally%20on-XrmToolBox-1e6fba)](https://www.xrmtoolbox.com/plugins/EntityFieldsAnalyser/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AmraouiH/EntityFieldsAnalyzer-PPTB/blob/main/LICENSE)
